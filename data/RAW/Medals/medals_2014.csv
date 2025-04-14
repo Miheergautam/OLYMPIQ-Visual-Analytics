@@ -1,27 +1,27 @@
-NOC,Gold,Silver,Bronze,Total,Year
-RUS,11,9,9,29,2014
-NOR,11,6,9,26,2014
-CAN,10,10,5,25,2014
-USA,9,9,10,28,2014
-NED,8,7,9,24,2014
-GER,8,6,5,19,2014
-SUI,7,2,2,11,2014
-BLR,5,0,1,6,2014
-AUT,4,8,5,17,2014
-FRA,4,4,7,15,2014
-POL,4,1,1,6,2014
-CHN,3,4,2,9,2014
-KOR,3,3,2,8,2014
-SWE,2,7,6,15,2014
-CZE,2,4,3,9,2014
-SLO,2,2,4,8,2014
-JPN,1,4,3,8,2014
-FIN,1,3,1,5,2014
-GBR,1,1,3,5,2014
-LAT,1,1,3,5,2014
-UKR,1,1,0,2,2014
-SVK,1,0,0,1,2014
-ITA,0,2,7,9,2014
-AUS,0,2,1,3,2014
-CRO,0,1,0,1,2014
-KAZ,0,0,1,1,2014
+Country,Gold,Silver,Bronze,Total,Year
+Russia,11,9,9,29,2014
+Norway,11,6,9,26,2014
+Canada,10,10,5,25,2014
+United States,9,9,10,28,2014
+Netherlands,8,7,9,24,2014
+Germany,8,6,5,19,2014
+Switzerland,7,2,2,11,2014
+Belarus,5,0,1,6,2014
+Austria,4,8,5,17,2014
+France,4,4,7,15,2014
+Poland,4,1,1,6,2014
+China,3,4,2,9,2014
+South Korea,3,3,2,8,2014
+Sweden,2,7,6,15,2014
+Czech Republic,2,4,3,9,2014
+Slovenia,2,2,4,8,2014
+Japan,1,4,3,8,2014
+Finland,1,3,1,5,2014
+Great Britain,1,1,3,5,2014
+Latvia,1,1,3,5,2014
+Ukraine,1,1,0,2,2014
+Slovakia,1,0,0,1,2014
+Italy,0,2,7,9,2014
+Australia,0,2,1,3,2014
+Croatia,0,1,0,1,2014
+Kazakhstan,0,0,1,1,2014

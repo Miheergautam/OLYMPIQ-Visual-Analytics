@@ -1,27 +1,27 @@
-NOC,Gold,Silver,Bronze,Total,Year
-GER,11,12,6,29,2006
-USA,9,9,7,25,2006
-AUT,9,7,7,23,2006
-RUS,8,6,8,22,2006
-CAN,7,10,7,24,2006
-SWE,7,2,5,14,2006
-KOR,6,3,2,11,2006
-SUI,5,4,5,14,2006
-ITA,5,0,6,11,2006
-FRA,3,2,4,9,2006
-NED,3,2,4,9,2006
-EST,3,0,0,3,2006
-NOR,2,8,9,19,2006
-CHN,2,4,5,11,2006
-CZE,1,2,1,4,2006
-CRO,1,2,0,3,2006
-AUS,1,0,1,2,2006
-JPN,1,0,0,1,2006
-FIN,0,6,3,9,2006
-POL,0,1,1,2,2006
-BLR,0,1,0,1,2006
-GBR,0,1,0,1,2006
-BUL,0,1,0,1,2006
-SVK,0,1,0,1,2006
-UKR,0,0,2,2,2006
-LAT,0,0,1,1,2006
+Country,Gold,Silver,Bronze,Total,Year
+Germany,11,12,6,29,2006
+United States,9,9,7,25,2006
+Austria,9,7,7,23,2006
+Russia,8,6,8,22,2006
+Canada,7,10,7,24,2006
+Sweden,7,2,5,14,2006
+South Korea,6,3,2,11,2006
+Switzerland,5,4,5,14,2006
+Italy,5,0,6,11,2006
+France,3,2,4,9,2006
+Netherlands,3,2,4,9,2006
+Estonia,3,0,0,3,2006
+Norway,2,8,9,19,2006
+China,2,4,5,11,2006
+Czech Republic,1,2,1,4,2006
+Croatia,1,2,0,3,2006
+Australia,1,0,1,2,2006
+Japan,1,0,0,1,2006
+Finland,0,6,3,9,2006
+Poland,0,1,1,2,2006
+Belarus,0,1,0,1,2006
+Great Britain,0,1,0,1,2006
+Bulgaria,0,1,0,1,2006
+Slovakia,0,1,0,1,2006
+Ukraine,0,0,2,2,2006
+Latvia,0,0,1,1,2006

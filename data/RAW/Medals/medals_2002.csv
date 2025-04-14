@@ -1,25 +1,25 @@
-NOC,Gold,Silver,Bronze,Total,Year
-NOR,13,5,7,25,2002
-GER,12,16,8,36,2002
-USA,10,13,11,34,2002
-CAN,7,3,7,17,2002
-RUS,5,4,4,13,2002
-FRA,4,5,2,11,2002
-ITA,4,4,5,13,2002
-FIN,4,2,1,7,2002
-NED,3,5,0,8,2002
-AUT,3,4,10,17,2002
-SUI,3,2,6,11,2002
-CRO,3,1,0,4,2002
-CHN,2,2,4,8,2002
-KOR,2,2,0,4,2002
-AUS,2,0,0,2,2002
-CZE,1,2,0,3,2002
-EST,1,1,1,3,2002
-GBR,1,0,1,2,2002
-SWE,0,2,5,7,2002
-BUL,0,1,2,3,2002
-POL,0,1,1,2,2002
-JPN,0,1,1,2,2002
-BLR,0,0,1,1,2002
-SLO,0,0,1,1,2002
+Country,Gold,Silver,Bronze,Total,Year
+Norway,13,5,7,25,2002
+Germany,12,16,8,36,2002
+United States,10,13,11,34,2002
+Canada,7,3,7,17,2002
+Russia,5,4,4,13,2002
+France,4,5,2,11,2002
+Italy,4,4,5,13,2002
+Finland,4,2,1,7,2002
+Netherlands,3,5,0,8,2002
+Austria,3,4,10,17,2002
+Switzerland,3,2,6,11,2002
+Croatia,3,1,0,4,2002
+China,2,2,4,8,2002
+South Korea,2,2,0,4,2002
+Australia,2,0,0,2,2002
+Czech Republic,1,2,0,3,2002
+Estonia,1,1,1,3,2002
+Great Britain,1,0,1,2,2002
+Sweden,0,2,5,7,2002
+Bulgaria,0,1,2,3,2002
+Poland,0,1,1,2,2002
+Japan,0,1,1,2,2002
+Belarus,0,0,1,1,2002
+Slovenia,0,0,1,1,2002
