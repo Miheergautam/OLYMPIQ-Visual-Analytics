@@ -1,0 +1,11 @@
+### Data Sources
+
+- [Countrywise Medals Tally](https://www.kaggle.com/datasets/muhammadehsan02/historical-olympic-medals-data-1994-2024)
+
+- [GDP per capita](https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2023&start=2000)
+
+
+
+### Notes
+
+1. The GDP per capita data is available from 2000 to 2023. We will use the GDP per capita data from 2000 to 2023 for the analysis.
