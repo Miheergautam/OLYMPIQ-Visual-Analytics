@@ -4,6 +4,8 @@
 
 - [GDP per capita](https://data.worldbank.org/indicator/NY.GDP.PCAP.CD?end=2023&start=2000)
 
+- [Total GDP](https://databank.worldbank.org/reports.aspx?source=2&series=NY.GDP.PCAP.CD&country=)
+
 
 
 ### Notes
