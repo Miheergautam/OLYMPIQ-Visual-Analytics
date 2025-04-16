@@ -12,3 +12,5 @@
 ### Notes
 
 1. The GDP per capita data is available from 2000 to 2023. We will use the GDP per capita data from 2000 to 2023 for the analysis.
+
+2. All the indicators may not be available for all countries for all years. We will need to handle missing data appropriately. Currently, the scripts do not include those entries in the cleaned data.
