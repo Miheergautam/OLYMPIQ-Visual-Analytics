@@ -2,7 +2,7 @@ import pandas as pd
 
 # Load the dataset
 gdp_path = r"c:\Users\HP\Documents\GitHub\OlympiQ\data\raw\socio-economic\GDP_Data.csv"
-gdp_df = pd.read_csv(gdp_path)
+gdp_df = pd.read_csv(gdp_path, na_values = "..")
 
 # Strip whitespace from all column names
 gdp_df.columns = gdp_df.columns.str.strip()
