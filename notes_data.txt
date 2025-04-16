@@ -6,6 +6,7 @@
 
 - [Total GDP](https://databank.worldbank.org/reports.aspx?source=2&series=NY.GDP.PCAP.CD&country=)
 
+- [Education Expenditure (% of GDP)](https://databank.worldbank.org/reports.aspx?source=2&series=SE.XPD.TOTL.GD.ZS&country=)
 
 
 ### Notes
