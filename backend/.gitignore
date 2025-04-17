@@ -1,28 +1,77 @@
 # Python
 __pycache__/
 *.py[cod]
-*.egg
-*.egg-info/
-dist/
-build/
+*$py.class
+*.so
+.Python
 env/
-.venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
 .env
 
-# VSCode
+# IDE files
+.idea/
 .vscode/
-
-# Jupyter
-.ipynb_checkpoints/
-
-# OS files
+*.swp
+*.swo
 .DS_Store
-Thumbs.db
 
-# Logs and temp
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# FastAPI
+.pytest_cache/
+
+# Data files
+# Uncomment if you want to ignore data files
+# *.csv
+# *.xlsx
+# *.json
+
+# Logs
 *.log
-*.tmp
+logs/
 
-# Pydantic cache (if any)
-.cache/
+# Local configuration
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Database
+*.db
+*.sqlite3
