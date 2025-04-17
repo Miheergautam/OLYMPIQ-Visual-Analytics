@@ -48,11 +48,51 @@ uvicorn app.main:app --reload
 
 The server will be available at `http://127.0.0.1:8000`
 
-## API Endpoints
+## 📘 API Endpoints – Olympic Medal Data
 
-- `GET /medals` - Retrieve all Olympic medal data
-- `GET /medals/{country}` - Retrieve medal data for a specific country
+### 🏅 GET `/medals`
+Retrieve **all Olympic medal data** across all countries and years.
 
+---
+
+### 🏳️ GET `/medals/{country}`
+Retrieve **medal data for a specific country** across all Olympic years.
+
+**Path Parameters:**
+- `country` (string): Name of the country (case-insensitive)
+
+---
+
+### 📅 GET `/medals/year/{year}`
+Retrieve **medal data for all countries in a specific Olympic year.
+
+**Path Parameters:**
+- `year` (integer): Olympic year (e.g., 2008, 2024)
+
+---
+
+### 📊 GET `/medals/aggregate`
+Retrieve **total medal counts (Gold, Silver, Bronze, Total)** aggregated by country across all years.
+
+---
+
+### 📈 GET `/medals/trend/{country}`
+Retrieve a **year-wise medal trend** for a specific country.
+
+**Path Parameters:**
+- `country` (string): Name of the country (case-insensitive)
+
+---
+
+### 🥇 GET `/medals/top/{year}?top_n=10`
+Retrieve the **top N countries by total medals** in a specific Olympic year.
+
+**Path Parameters:**
+- `year` (integer): Olympic year  
+**Query Parameters:**
+- `top_n` (integer, optional): Number of top countries to return (default: 10)
+
+---
 
 ## Data Format
 
