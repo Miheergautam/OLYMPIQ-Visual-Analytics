@@ -1,7 +1,12 @@
 import pandas as pd
+from pathlib import Path
+
+# Define the base directory relative to the script location
+script_dir = Path(__file__).resolve().parent
 
 # Load the dataset
-edu_path = r"c:\Users\HP\Documents\GitHub\OlympiQ\data\raw\socio-economic\education_expenditure.csv"
+# edu_path = r"c:\Users\HP\Documents\GitHub\OlympiQ\backend\app\data\RAW\socio-economic\education_expenditure.csv"
+edu_path = script_dir.parents[1] / "data/RAW/socio-economic/education_expenditure.csv"
 edu_df = pd.read_csv(edu_path, na_values="..")
 
 # Strip column name whitespace
@@ -21,11 +26,12 @@ edu_df = edu_df.melt(id_vars=["Country"], var_name="Year", value_name="Education
 edu_df["Year"] = edu_df["Year"].str.extract(r"(\d{4})")
 
 # Drop missing and invalid year rows
-edu_df = edu_df.dropna(subset=["Education Exp (%GDP)"])
+# edu_df = edu_df.dropna(subset=["Education Exp (%GDP)"])
 edu_df = edu_df[edu_df["Year"].astype(int).between(2000, 2023)]
 
 # Load Olympic countries
-medals_path = r"c:\Users\HP\Documents\GitHub\OlympiQ\data\processed\medals.csv"
+# medals_path = r"c:\Users\HP\Documents\GitHub\OlympiQ\backend\app\data\processed\medals.csv"
+medals_path = script_dir.parents[1] / "data/processed/medals.csv"
 olympic_countries = set(pd.read_csv(medals_path)["Country"].unique())
 
 # Country name mapping for alignment with Olympic names
@@ -78,5 +84,5 @@ else:
     print("✅ All Olympic countries matched successfully for education expenditure.")
 
 # Save cleaned version
-edu_df.to_csv(r"c:\Users\HP\Documents\GitHub\OlympiQ\data\processed\education_expenditure_cleaned.csv", index=False)
+edu_df.to_csv(script_dir.parents[1] / "data/processed/education_expenditure_cleaned.csv", index=False)
 print("✅ Cleaned and saved: education_expenditure_cleaned.csv")
