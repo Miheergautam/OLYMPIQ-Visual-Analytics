@@ -1,12 +1,72 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# OlympIQ Frontend (React + Vite)
 
-Currently, two official plugins are available:
+Welcome to the **OlympIQ** dashboard – a data-driven visual analytics platform to explore how socio-economic factors influence Olympic success.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project is built using **React**, **Vite**, **Tailwind CSS**, and **D3.js**, with a modular structure for visual components and interactive charts.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/<your-username>/OlympIQ.git
+cd OlympIQ/frontend
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Start the development server
+
+```bash
+npm run dev
+```
+
+---
+
+## 📁 Project Structure
+
+```
+frontend/
+├── public/
+├── src/
+│   ├── assets/                # Static images, icons, data files
+│   ├── charts/                # D3/Visualization components
+│   ├── components/            # Reusable UI components
+│   ├── pages/                 # Page views (Dashboard, About, etc.)
+│   ├── App.jsx                # Main app entry
+│   └── main.jsx               # Vite entry point
+├── index.html
+└── vite.config.js
+```
+
+---
+
+## 🧰 Tech Stack
+
+- **React + Vite** – fast, modern frontend tooling
+- **Tailwind CSS** – utility-first styling
+- **D3.js** – powerful data visualizations
+- **Recharts** – simple, reusable chart components
+- **React Router DOM** – for SPA routing
+
+---
+
+## 🤝 Contributing
+
+1. Fork this repo
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Commit your changes
+4. Push and open a PR 🙌
+
+---
+
+## 📃 License
+
+MIT License
