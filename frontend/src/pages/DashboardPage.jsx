@@ -1,5 +1,6 @@
 // DashboardPage.jsx
 import React from "react";
+import MedalDashboard from "../charts/MedalDashboard";
 
 const DashboardPage = () => {
   return (
@@ -9,6 +10,8 @@ const DashboardPage = () => {
         Here you can add your dynamic content, such as charts, tables, etc.
       </p>
       {/* More content */}
+      <MedalDashboard/>
+
     </div>
   );
 };
