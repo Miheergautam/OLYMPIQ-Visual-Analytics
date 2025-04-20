@@ -5,6 +5,7 @@ from .gdp_per_capita_routes import router as gdp_pc_router
 from .education_expenditure_routes import router as edu_router
 from .political_stability_routes import router as political_stability_router
 from .urban_population_routes import router as urban_population_router
+from .population_routes import router as population_router
 
 router = APIRouter()
 router.include_router(medal_router)
@@ -13,3 +14,4 @@ router.include_router(gdp_pc_router)
 router.include_router(edu_router)
 router.include_router(political_stability_router)
 router.include_router(urban_population_router)
+router.include_router(population_router)
