@@ -1,9 +1,11 @@
 from fastapi import APIRouter
 import pandas as pd
+import os
 
 router = APIRouter()
 
-data_file_path = "/Users/miheergautam/Documents/GitHub/OlympIQ/backend/app/data/processed/medals.csv"
+data_file_path = "C:\\Users\\kshub\\OneDrive\\Documents\\10th_semester\\cs661\\OLYMPIQ-Visual-Analytics\\backend\\app\\data\\processed\\medals.csv"
+# data_file_path = os.path.expanduser(data_file_path)
 data = pd.read_csv(data_file_path)
 
 @router.get("/medals")
