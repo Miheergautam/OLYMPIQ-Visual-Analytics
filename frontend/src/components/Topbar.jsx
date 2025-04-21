@@ -7,10 +7,14 @@ const Topbar = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-neutral-900 shadow-sm">
+    <header className="flex items-center justify-between px-6 bg-neutral-900 shadow-sm border-b border-neutral-700">
       {/* Left: Logo */}
-      <div className="flex items-center gap-3">
-        <span className="text-xl font-bold text-white">OlympIQ</span>
+      <div className="flex items-center">
+        <img
+          src="/olympiq-high-resolution-logo.png"
+          alt="logo"
+          className="h-30 w-30 object-contain scale-120 "
+        />
       </div>
 
       {/* Center: Navigation Tabs */}
@@ -18,8 +22,8 @@ const Topbar = () => {
         <button
           className={`text-md font-semibold px-4 py-2 rounded-full transition-colors duration-300 ${
             activeTab === "Dashboard"
-              ? "bg-white text-black"
-              : "text-neutral-300 hover:text-white"
+              ? "bg-(--olympiq-blue) text-black"
+              : "text-white hover:text-white"
           }`}
           onClick={() => {
             setActiveTab("Dashboard");
@@ -31,8 +35,8 @@ const Topbar = () => {
         <button
           className={`text-md font-semibold px-4 py-2 rounded-full transition-colors duration-300 ${
             activeTab === "Insights"
-              ? "bg-white text-black"
-              : "text-neutral-300 hover:text-white"
+              ? "bg-(--olympiq-blue) text-black"
+              : "text-white hover:text-white"
           }`}
           onClick={() => setActiveTab("Insights")}
         >
@@ -41,8 +45,8 @@ const Topbar = () => {
         <button
           className={`text-md font-semibold px-4 py-2 rounded-full transition-colors duration-300 ${
             activeTab === "Finance"
-              ? "bg-white text-black"
-              : "text-neutral-300 hover:text-white"
+              ? "bg-(--olympiq-blue) text-black"
+              : "text-white hover:text-white"
           }`}
           onClick={() => setActiveTab("Finance")}
         >
@@ -51,8 +55,8 @@ const Topbar = () => {
         <button
           className={`text-md font-semibold px-4 py-2 rounded-full transition-colors duration-300 ${
             activeTab === "Reports"
-              ? "bg-white text-black"
-              : "text-neutral-300 hover:text-white"
+              ? "bg-(--olympiq-blue) text-black"
+              : "text-white hover:text-white"
           }`}
           onClick={() => setActiveTab("Reports")}
         >
