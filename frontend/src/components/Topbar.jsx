@@ -18,9 +18,9 @@ const Topbar = () => {
       {/* Logo */}
       <div className="flex items-center h-full overflow-hidden">
         <img
-          src="/olympiq-high-resolution-logo.png"
+          src="/logoname.png"
           alt="logo"
-          className="w-42 object-contain scale-120"
+          className="w-42 object-contain scale-110"
         />
       </div>
 
