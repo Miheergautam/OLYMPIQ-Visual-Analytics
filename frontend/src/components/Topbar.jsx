@@ -8,8 +8,8 @@ const Topbar = () => {
 
   const tabs = [
     { name: "Dashboard", path: "/dashboard" },
-    { name: "Insights", path: "/dashboard/insights" },
-    { name: "Reports", path: "/dashboard/reports" },
+    { name: "Insights", path: "/insights" },
+    { name: "Reports", path: "/reports" },
     { name: "Settings", path: "/settings" },
   ];
 

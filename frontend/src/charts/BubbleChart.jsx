@@ -16,77 +16,90 @@ const BubbleChart = () => {
   const [selectedCountries, setSelectedCountries] = useState([]);
   const [yearRange, setYearRange] = useState({ from: null, to: null });
 
-  useEffect(() => {
+  const parseFloatSafe = (val) => (val ? parseFloat(val) : null);
+
+  const joinData = () => {
     if (!healthData || !eduData || !medalsData) return;
 
-    const parseFloatSafe = val => val ? parseFloat(val) : null;
-
-    const health = healthData.map(d => ({
+    const health = healthData.map((d) => ({
       country: d.Country,
       year: +d.Year,
-      health: parseFloatSafe(d["Health Exp (%GDP)"])
+      health: parseFloatSafe(d["Health Exp (%GDP)"]),
     }));
 
-    const edu = eduData.map(d => ({
+    const education = eduData.map((d) => ({
       country: d.Country,
       year: +d.Year,
-      education: parseFloatSafe(d["Education Exp (%GDP)"])
+      education: parseFloatSafe(d["Education Exp (%GDP)"]),
     }));
 
-    const medals = medalsData.map(d => ({
+    const medals = medalsData.map((d) => ({
       country: d.Country,
       year: +d.Year,
-      medals: (d.Gold ?? 0) + (d.Silver ?? 0) + (d.Bronze ?? 0)
+      medals: (d.Gold ?? 0) + (d.Silver ?? 0) + (d.Bronze ?? 0),
     }));
 
-    const combined = d3.rollups(
-      [...health, ...edu, ...medals],
-      v => ({
-        country: v[0].country,
-        year: v[0].year,
-        health: d3.mean(v.map(d => d.health)),
-        education: d3.mean(v.map(d => d.education)),
-        medals: d3.sum(v.map(d => d.medals))
-      }),
-      d => `${d.country}-${d.year}`
-    ).map(([_, val]) => val);
+    const combined = d3
+      .rollups(
+        [...health, ...education, ...medals],
+        (v) => ({
+          country: v[0].country,
+          year: v[0].year,
+          health: d3.mean(v.map((d) => d.health)),
+          education: d3.mean(v.map((d) => d.education)),
+          medals: d3.sum(v.map((d) => d.medals)),
+        }),
+        (d) => `${d.country}-${d.year}`
+      )
+      .map(([_, val]) => val);
 
-    const grouped = d3.group(combined, d => d.country);
+    const grouped = d3.group(combined, (d) => d.country);
+    const filled = fillMissingValues(grouped);
+    setJoinedData(filled);
+  };
+
+  const fillMissingValues = (grouped) => {
     const filled = [];
-
     grouped.forEach((values) => {
       const sorted = values.sort((a, b) => a.year - b.year);
-      for (let i = 0; i < sorted.length; i++) {
-        if (!sorted[i].health) {
-          const prev = sorted[i - 1]?.health;
-          const next = sorted[i + 1]?.health;
-          sorted[i].health = (prev && next) ? (prev + next) / 2 : prev ?? next ?? 0;
-        }
-        if (!sorted[i].education) {
-          const prev = sorted[i - 1]?.education;
-          const next = sorted[i + 1]?.education;
-          sorted[i].education = (prev && next) ? (prev + next) / 2 : prev ?? next ?? 0;
-        }
-      }
+      sorted.forEach((item, idx) => {
+        if (!item.health) item.health = getInterpolatedValue(sorted, idx, "health");
+        if (!item.education) item.education = getInterpolatedValue(sorted, idx, "education");
+      });
       filled.push(...sorted);
     });
+    return filled;
+  };
 
-    setJoinedData(filled);
-  }, [healthData, eduData, medalsData]);
+  const getInterpolatedValue = (sorted, idx, key) => {
+    const prev = sorted[idx - 1]?.[key];
+    const next = sorted[idx + 1]?.[key];
+    return prev && next ? (prev + next) / 2 : prev ?? next ?? 0;
+  };
 
   useEffect(() => {
-    if (!joinedData.length) return;
+    joinData();
+  }, [healthData, eduData, medalsData]);
 
-    const data = joinedData.filter(d => {
+  const filterData = () => {
+    return joinedData.filter((d) => {
       const yearOk =
         (!yearRange.from || d.year >= yearRange.from) &&
         (!yearRange.to || d.year <= yearRange.to);
       const countryOk = !selectedCountries.length || selectedCountries.includes(d.country);
       return yearOk && countryOk;
     });
+  };
 
+  useEffect(() => {
+    if (!joinedData.length) return;
+    const data = filterData();
+    renderChart(data);
+  }, [joinedData, selectedCountries, yearRange]);
+
+  const renderChart = (data) => {
     const margin = { top: 50, right: 150, bottom: 70, left: 60 },
-      width = 800 - margin.left - margin.right,
+      width = 900 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
     const svg = d3.select(svgRef.current)
@@ -98,18 +111,16 @@ const BubbleChart = () => {
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const x = d3.scaleLinear()
-      .domain(d3.extent(joinedData, d => d.education))
-      .range([0, width]);
+    const x = d3.scaleLinear().domain(d3.extent(data, (d) => d.education)).range([0, width]);
+    const y = d3.scaleLinear().domain(d3.extent(data, (d) => d.health)).range([height, 0]);
+    const z = d3.scaleSqrt().domain([0, d3.max(data, (d) => d.medals)]).range([2, 30]);
 
-    const y = d3.scaleLinear()
-      .domain(d3.extent(joinedData, d => d.health))
-      .range([height, 0]);
+    appendAxes(svg, x, y, width, height);
+    appendLabels(svg, x, y, width, height);
+    appendBubbles(svg, data, x, y, z);
+  };
 
-    const z = d3.scaleSqrt()
-      .domain([0, d3.max(joinedData, d => d.medals)])
-      .range([2, 30]);
-
+  const appendAxes = (svg, x, y, width, height) => {
     svg.append("g")
       .call(d3.axisLeft(y).tickSize(-width).tickFormat(""))
       .selectAll("line")
@@ -126,7 +137,9 @@ const BubbleChart = () => {
       .call(d3.axisLeft(y).ticks(6))
       .selectAll("text")
       .style("fill", "#ccc");
+  };
 
+  const appendLabels = (svg, x, y, width, height) => {
     svg.append("text")
       .attr("text-anchor", "middle")
       .attr("x", width / 2)
@@ -143,6 +156,13 @@ const BubbleChart = () => {
       .style("fill", "#ccc")
       .style("font-size", "14px")
       .text("Health Expenditure (% of GDP)");
+  };
+
+  const appendBubbles = (svg, data, x, y, z) => {
+    const colorScale = d3
+      .scaleOrdinal()
+      .domain(Array.from(new Set(data.map((d) => d.country))))
+      .range(d3.schemeSet2);
 
     const tooltip = d3.select(svgRef.current)
       .append("div")
@@ -167,57 +187,55 @@ const BubbleChart = () => {
       tooltip.transition().duration(200).style("opacity", 0);
     };
 
-    const colorScale = d3.scaleOrdinal()
-      .domain(Array.from(new Set(joinedData.map(d => d.country))))
-      .range(d3.schemeSet2);
-
     svg.append("g")
       .selectAll("circle")
-      .data(data, d => d.country + d.year)
+      .data(data, (d) => d.country + d.year)
       .join(
-        enter => enter.append("circle")
-          .attr("cx", d => x(d.education))
-          .attr("cy", d => y(d.health))
-          .attr("r", 0)
-          .style("fill", d => colorScale(d.country))
-          .style("opacity", 0.85)
-          .attr("stroke", "#fff")
-          .on("mouseover", showTooltip)
-          .on("mousemove", showTooltip)
-          .on("mouseleave", hideTooltip)
-          .transition()
-          .duration(1200)
-          .ease(d3.easeBounceOut)
-          .attr("r", d => z(d.medals)),
+        (enter) =>
+          enter
+            .append("circle")
+            .attr("cx", (d) => x(d.education))
+            .attr("cy", (d) => y(d.health))
+            .attr("r", 0)
+            .style("fill", (d) => colorScale(d.country))
+            .style("opacity", 0.85)
+            .attr("stroke", "#fff")
+            .on("mouseover", showTooltip)
+            .on("mousemove", showTooltip)
+            .on("mouseleave", hideTooltip)
+            .transition()
+            .duration(1200)
+            .ease(d3.easeBounceOut)
+            .attr("r", (d) => z(d.medals)),
 
-        update => update
-          .transition()
-          .duration(1000)
-          .ease(d3.easeCubicInOut)
-          .attr("cx", d => x(d.education))
-          .attr("cy", d => y(d.health))
-          .attr("r", d => z(d.medals))
-          .style("fill", d => colorScale(d.country)),
+        (update) =>
+          update
+            .transition()
+            .duration(1000)
+            .ease(d3.easeCubicInOut)
+            .attr("cx", (d) => x(d.education))
+            .attr("cy", (d) => y(d.health))
+            .attr("r", (d) => z(d.medals))
+            .style("fill", (d) => colorScale(d.country)),
 
-        exit => exit
-          .transition()
-          .duration(600)
-          .attr("r", 0)
-          .style("opacity", 0)
-          .remove()
+        (exit) =>
+          exit
+            .transition()
+            .duration(600)
+            .attr("r", 0)
+            .style("opacity", 0)
+            .remove()
       );
+  };
 
-  }, [joinedData, selectedCountries, yearRange]);
-
-  const countryOptions = Array.from(new Set(joinedData.map(d => d.country)))
+  const countryOptions = Array.from(new Set(joinedData.map((d) => d.country)))
     .sort()
-    .map(c => ({ value: c, label: c }));
+    .map((c) => ({ value: c, label: c }));
 
-  const yearOptions = Array.from(new Set(joinedData.map(d => d.year)))
+  const yearOptions = Array.from(new Set(joinedData.map((d) => d.year)))
     .sort((a, b) => a - b)
-    .map(year => ({ value: year, label: year }));
+    .map((year) => ({ value: year, label: year }));
 
-  // React-Select custom styles
   const customSelectStyles = {
     control: (provided) => ({
       ...provided,
@@ -250,46 +268,44 @@ const BubbleChart = () => {
   };
 
   return (
-    <div>
-      <div style={{ width: 400, margin: "20px auto", color: "white" }}>
-        <label style={{ fontWeight: "bold", marginBottom: "5px", display: "block" }}>
-          Filter Countries:
-        </label>
+    <div className="max-w-5xl flex flex-col justify-center items-center">
+      <div className="mx-auto my-4 text-white w-full">
+        <label className="font-bold mb-2 block">Filter Countries:</label>
         <Select
           isMulti
           options={countryOptions}
-          onChange={selected => setSelectedCountries(selected.map(d => d.value))}
+          onChange={(selected) => setSelectedCountries(selected.map((d) => d.value))}
           placeholder="Select countries..."
           styles={customSelectStyles}
         />
       </div>
 
-      <div style={{ width: 400, margin: "10px auto", display: "flex", gap: "10px" }}>
-        <div style={{ flex: 1 }}>
-          <label style={{ color: "white", fontWeight: "bold", marginBottom: "5px", display: "block" }}>
-            From Year:
-          </label>
+      <div className="mx-auto my-4 flex gap-3 w-full">
+        <div className="flex-1">
+          <label className="text-white font-bold mb-2 block">From Year:</label>
           <Select
             options={yearOptions}
-            onChange={selected => setYearRange(prev => ({ ...prev, from: selected?.value }))}
+            onChange={(selected) =>
+              setYearRange((prev) => ({ ...prev, from: selected?.value }))
+            }
             placeholder="Select From Year..."
             styles={customSelectStyles}
           />
         </div>
-        <div style={{ flex: 1 }}>
-          <label style={{ color: "white", fontWeight: "bold", marginBottom: "5px", display: "block" }}>
-            To Year:
-          </label>
+        <div className="flex-1">
+          <label className="text-white font-bold mb-2 block">To Year:</label>
           <Select
             options={yearOptions}
-            onChange={selected => setYearRange(prev => ({ ...prev, to: selected?.value }))}
+            onChange={(selected) =>
+              setYearRange((prev) => ({ ...prev, to: selected?.value }))
+            }
             placeholder="Select To Year..."
             styles={customSelectStyles}
           />
         </div>
       </div>
-
       <div ref={svgRef}></div>
+
     </div>
   );
 };

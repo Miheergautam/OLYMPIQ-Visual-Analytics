@@ -2,33 +2,33 @@ import React, { useState } from "react";
 import {
   Home,
   TrendingUp,
-  MapPin,
-  Globe,
-  Info,
+  Activity,
+  Users,
+  Shield,
   BookOpen,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const Sidebar = () => {
+const SidebarInsight = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
 
   const navItems = [
-    { label: "Medals", icon: <Home size={18} />, route: "/dashboard/medals" },
-    { label: "GDP", icon: <TrendingUp size={18} />, route: "/dashboard/gdp" },
-    { label: "Health Expenditure", icon: <MapPin size={18} />, route: "/dashboard/health" },
-    { label: "Population", icon: <Globe size={18} />, route: "/dashboard/population" },
-    { label: "Political Stability", icon: <Info size={18} />, route: "/dashboard/stability" },
-    { label: "Literacy Rate", icon: <BookOpen size={18} />, route: "/dashboard/literacy" },
+    { label: "Medals Insight", icon: <Home size={18} />, route: "/insights/medals" },
+    { label: "GDP Insight", icon: <TrendingUp size={18} />, route: "/insights/gdp" },
+    { label: "Health Expenditure", icon: <Activity size={18} />, route: "/insights/health" },
+    { label: "Population Insight", icon: <Users size={18} />, route: "/insights/population" },
+    { label: "Political Stability", icon: <Shield size={18} />, route: "/insights/stability" },
+    { label: "Literacy Rate", icon: <BookOpen size={18} />, route: "/insights/literacy" },
   ];
 
   return (
     <aside
       className={`${
         collapsed ? "w-20" : "w-64"
-      } transition-all duration-200 bg-neutral-900 border-r border-neutral-700 h-full pr-4 flex flex-col `}
+      } transition-all duration-200 bg-neutral-900 border-r border-neutral-700 h-full pr-4 flex flex-col`}
     >
       {/* Collapse Button */}
       <div
@@ -37,7 +37,7 @@ const Sidebar = () => {
         } mb-5`}
       >
         <div
-          className=" bg-neutral-800 h-10 w-10 rounded-full flex items-center justify-center hover:bg-neutral-700 transition "
+          className="bg-neutral-800 h-10 w-10 rounded-full flex items-center justify-center hover:bg-neutral-700 transition"
           onClick={() => setCollapsed(!collapsed)}
         >
           <button className="text-[var(--olympiq-blue)]">
@@ -67,4 +67,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default SidebarInsight;

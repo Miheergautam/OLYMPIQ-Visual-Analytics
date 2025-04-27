@@ -108,7 +108,7 @@ const OlympicPerformanceChart = () => {
   };
 
   return (
-    <div className="min-w-6xl mx-auto p-6 bg-neutral-900 text-white border border-neutral-700 rounded-lg shadow-xl">
+    <div className="min-w-5xl mx-auto p-6 bg-neutral-900 text-white border border-neutral-700 rounded-lg shadow-xl">
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-6">
         {/* Year Dropdown */}
         <div className="flex flex-col">
@@ -184,19 +184,19 @@ const OlympicPerformanceChart = () => {
             <Bar
               dataKey="gold"
               stackId="a"
-              fill="#FFB800"  // Gold color update
+              fill="#FFB800"  // Gold color 
               animationDuration={500}
             />
             <Bar
               dataKey="silver"
               stackId="a"
-              fill="#C0C0C0"  // Silver color update
+              fill="#C0C0C0"  // Silver color 
               animationDuration={500}
             />
             <Bar
               dataKey="bronze"
               stackId="a"
-              fill="#CD7F32"  // Bronze color update
+              fill="#CD7F32"  // Bronze color 
               animationDuration={500}
             />
           </BarChart>
