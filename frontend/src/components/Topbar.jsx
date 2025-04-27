@@ -1,82 +1,55 @@
 import React, { useState } from "react";
-import { Search, Bell, Settings } from "lucide-react";
+import { Search, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Topbar = () => {
   const [activeTab, setActiveTab] = useState("Dashboard");
   const navigate = useNavigate();
 
+  const tabs = [
+    { name: "Dashboard", path: "/dashboard" },
+    { name: "Insights", path: "/insights" },
+    { name: "Reports", path: "/reports" },
+    { name: "Settings", path: "/settings" },
+  ];
+
   return (
-    <header className="flex items-center justify-between px-6 bg-neutral-900 shadow-sm border-b border-neutral-700">
-      {/* Left: Logo */}
-      <div className="flex items-center">
+    <header className="flex items-center justify-between px-6 bg-neutral-900 shadow-sm border-b border-neutral-700 h-20">
+      {/* Logo */}
+      <div className="flex items-center h-full overflow-hidden">
         <img
           src="/olympiq-high-resolution-logo.png"
           alt="logo"
-          className="h-30 w-30 object-contain scale-120 "
+          className="w-42 object-contain scale-120"
         />
       </div>
 
-      {/* Center: Navigation Tabs */}
-      <nav className="hidden md:flex items-center justify-center gap-2 px-2 bg-neutral-700 rounded-full py-3 shadow-inner min-w-md">
-        <button
-          className={`text-md font-semibold px-4 py-2 rounded-full transition-colors duration-300 ${
-            activeTab === "Dashboard"
-              ? "bg-(--olympiq-blue) text-black"
-              : "text-white hover:text-white"
-          }`}
-          onClick={() => {
-            setActiveTab("Dashboard");
-            navigate("/");
-          }}
-        >
-          Dashboard
-        </button>
-        <button
-          className={`text-md font-semibold px-4 py-2 rounded-full transition-colors duration-300 ${
-            activeTab === "Insights"
-              ? "bg-(--olympiq-blue) text-black"
-              : "text-white hover:text-white"
-          }`}
-          onClick={() => setActiveTab("Insights")}
-        >
-          Insights
-        </button>
-        <button
-          className={`text-md font-semibold px-4 py-2 rounded-full transition-colors duration-300 ${
-            activeTab === "Finance"
-              ? "bg-(--olympiq-blue) text-black"
-              : "text-white hover:text-white"
-          }`}
-          onClick={() => setActiveTab("Finance")}
-        >
-          Finance
-        </button>
-        <button
-          className={`text-md font-semibold px-4 py-2 rounded-full transition-colors duration-300 ${
-            activeTab === "Reports"
-              ? "bg-(--olympiq-blue) text-black"
-              : "text-white hover:text-white"
-          }`}
-          onClick={() => setActiveTab("Reports")}
-        >
-          Reports
-        </button>
+      {/* Center Tabs */}
+      <nav className="hidden md:flex items-center justify-center gap-2 px-2 bg  rounded-full py-2 shadow-inner min-w-md">
+        <span className="">{`<`}</span>
+        {tabs.map((tab) => (
+          <button
+            key={tab.name}
+            className={`text-md font-semibold px-4 py-2 rounded-full transition-colors duration-300 hover:bg-neutral-700 ${
+              activeTab === tab.name
+                ? "text-(--olympiq-blue) bg-neutral-700"
+                : "text-white hover:text-(--olympiq-blue)"
+            }`}
+            onClick={() => {
+              setActiveTab(tab.name);
+              navigate(tab.path);
+            }}
+          >
+            {tab.name}
+          </button>
+        ))}
+        <span>{`>`}</span>
       </nav>
 
-      {/* Right: Icons */}
+      {/* Right Icons */}
       <div className="flex items-center gap-4">
         <div className="p-3 bg-neutral-700 rounded-full hover:bg-neutral-600 shadow-sm cursor-pointer hover:shadow-md transition-all duration-200 transform hover:scale-105 active:scale-95">
           <Search size={18} />
-        </div>
-        <div
-          className="p-3 bg-neutral-700 rounded-full hover:bg-neutral-600 shadow-sm cursor-pointer hover:shadow-md transition-all duration-200 transform hover:scale-105 active:scale-95"
-          on
-          onClick={() => {
-            navigate("settings");
-          }}
-        >
-          <Settings size={18} />
         </div>
       </div>
     </header>

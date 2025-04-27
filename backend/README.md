@@ -1,155 +1,155 @@
 # OlympIQ Backend
 
-A FastAPI backend service for the OlympIQ application that provides Olympic medals data via RESTful API endpoints.
+A FastAPI backend service for the OlympIQ application that provides comprehensive Olympic and socio-economic data via RESTful API endpoints.
 
 ## Overview
 
-OlympIQ Backend serves Olympic medal statistics through various API endpoints. It uses **FastAPI** for the API framework and **pandas** for data processing.
+OlympIQ Backend serves:
+- Olympic medal statistics
+- Economic indicators (GDP, GDP per capita)
+- Social metrics (Education, Health, Literacy rates)
+- Demographic data (Population, Urbanization)
+- Governance indicators (Political Stability)
+
+Built with **FastAPI** framework and **pandas** for data processing.
 
 ## Prerequisites
 
-- Python 3.10 or higher  
+- Python 3.10+
 - pip (Python package manager)
 
 ## Setup Instructions
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/yourusername/OlympIQ.git
-   cd OlympIQ/backend
-   ```
+```bash
+# Clone repository
+git clone https://github.com/yourusername/OlympIQ.git
+cd OlympIQ/backend
 
-2. **Create a virtual environment**:
-   ```bash
-   python -m venv venv
-   ```
+# Create virtual environment
+python -m venv venv
 
-3. **Activate the virtual environment**:
-   
-   macOS/Linux:
-   ```bash
-   source venv/bin/activate
-   ```
-   
-   Windows:
-   ```bash
-   venv\Scripts\activate
-   ```
+# Activate environment
+# Linux/macOS:
+source venv/bin/activate
+# Windows:
+venv\Scripts\activate
 
-4. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+# Install dependencies
+pip install -r requirements.txt
+```
 
 ## Running the Application
 
-Start the FastAPI development server with:
 ```bash
 uvicorn app.main:app --reload
 ```
 
-Once started, access the API documentation at:
-http://127.0.0.1:8000/docs
+Access API documentation at: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ## API Endpoints
 
-The OlympIQ backend provides various API endpoints organized by category.
+### Olympic Data
 
-### 🏅 Medal Data Endpoints
+| Category          | Endpoint                          | Method | Description                          | Parameters |
+|-------------------|-----------------------------------|--------|--------------------------------------|------------|
+| Medal Data        | `/medals`                         | GET    | All Olympic medal data               | None       |
+|                   | `/medals/{country}`               | GET    | Medal data by country                | country (str) |
+|                   | `/medals/year/{year}`             | GET    | Medal data by year                   | year (int) |
+|                   | `/medals/aggregate`               | GET    | Aggregated medal counts              | None       |
+|                   | `/medals/trend/{country}`         | GET    | Year-wise medal trend                | country (str) |
+|                   | `/medals/top/{year}`              | GET    | Top countries by medals              | year (int), top_n (int, optional) |
 
-| Endpoint | Description | Parameters |
-|----------|-------------|------------|
-| `GET /medals` | Retrieve all Olympic medal data across countries and years. | None |
-| `GET /medals/{country}` | Retrieve medal data for a specific country. | **Path Parameters:**<br>• country (string) – Name of the country (case-insensitive) |
-| `GET /medals/year/{year}` | Retrieve medal data for all countries in a specific year. | **Path Parameters:**<br>• year (integer) – Olympic year (e.g., 2008, 2024) |
-| `GET /medals/aggregate` | Retrieve total medal counts (Gold, Silver, Bronze, Total) aggregated by country. | None |
-| `GET /medals/trend/{country}` | Retrieve year-wise medal trend for a specific country. | **Path Parameters:**<br>• country (string) – Name of the country (case-insensitive) |
-| `GET /medals/top/{year}?top_n=10` | Retrieve top N countries by total medals in a specific year. | **Path Parameters:**<br>• year (integer) – Olympic year<br>**Query Parameters:**<br>• top_n (integer, optional) – Number of top countries to return (default: 10) |
+### Economic Indicators
 
-### 💰 GDP Data Endpoints
+| Category          | Endpoint                          | Method | Description                          | Parameters |
+|-------------------|-----------------------------------|--------|--------------------------------------|------------|
+| GDP               | `/gdp`                            | GET    | All GDP data                         | None       |
+|                   | `/gdp/{country}`                  | GET    | GDP data by country                  | country (str) |
+|                   | `/gdp/year/{year}`                | GET    | GDP data by year                     | year (int) |
+| GDP Per Capita    | `/gdp-per-capita`                 | GET    | All GDP per capita data              | None       |
+|                   | `/gdp-per-capita/{country}`       | GET    | GDP per capita by country            | country (str) |
 
-| Endpoint | Description | Parameters |
-|----------|-------------|------------|
-| `GET /gdp` | Retrieve all GDP data across countries and years. | None |
-| `GET /gdp/{country}` | Retrieve GDP data for a specific country. | **Path Parameters:**<br>• country (string) – Name of the country (case-insensitive) |
-| `GET /gdp/year/{year}` | Retrieve GDP data for all countries in a specific year. | **Path Parameters:**<br>• year (integer) – Year for GDP data |
-| `GET /gdp/trend/{country}` | Retrieve year-wise GDP trend for a specific country. | **Path Parameters:**<br>• country (string) – Name of the country (case-insensitive) |
-| `GET /gdp/top/{year}?top_n=10` | Retrieve top N countries by GDP in a specific year. | **Path Parameters:**<br>• year (integer) – Year for GDP data<br>**Query Parameters:**<br>• top_n (integer, optional) – Number of top countries to return (default: 10) |
+### Social Metrics
 
-### 📊 GDP Per Capita Endpoints
+| Category          | Endpoint                          | Method | Description                          | Parameters |
+|-------------------|-----------------------------------|--------|--------------------------------------|------------|
+| Education         | `/education-expenditure`          | GET    | All education expenditure data       | None       |
+|                   | `/education-expenditure/{country}`| GET    | Education data by country            | country (str) |
+| Health           | `/health-exp`                     | GET    | All health expenditure data          | None       |
+|                   | `/health-exp/year/{year}`         | GET    | Health data by year                  | year (int) |
+| Literacy         | `/literacy`                       | GET    | All literacy rate data               | None       |
+|                   | `/literacy/top/{year}`            | GET    | Top literate countries               | year (int), top_n (int, optional) |
 
-| Endpoint | Description | Parameters |
-|----------|-------------|------------|
-| `GET /gdp-per-capita` | Retrieve all GDP per capita data across countries and years. | None |
-| `GET /gdp-per-capita/{country}` | Retrieve GDP per capita data for a specific country. | **Path Parameters:**<br>• country (string) – Name of the country (case-insensitive) |
-| `GET /gdp-per-capita/year/{year}` | Retrieve GDP per capita data for all countries in a specific year. | **Path Parameters:**<br>• year (integer) – Year for GDP per capita data |
-| `GET /gdp-per-capita/top/{year}?top_n=10` | Retrieve top N countries by GDP per capita in a specific year. | **Path Parameters:**<br>• year (integer) – Year for GDP per capita data<br>**Query Parameters:**<br>• top_n (integer, optional) – Number of top countries to return (default: 10) |
+### Demographic Data
 
-## Data Format
+| Category          | Endpoint                          | Method | Description                          | Parameters |
+|-------------------|-----------------------------------|--------|--------------------------------------|------------|
+| Population        | `/population`                     | GET    | All population data                  | None       |
+|                   | `/population/top/{year}`          | GET    | Most populated countries             | year (int), top_n (int, optional) |
+| Urbanization     | `/urban`                          | GET    | All urban population data            | None       |
+|                   | `/urban/bottom/{year}`            | GET    | Least urbanized countries            | year (int), bottom_n (int, optional) |
 
-### Medal Data Format
-Ensure the medals.csv file contains the following columns:
-- Country
-- Gold
-- Silver
-- Bronze
-- Total
-- Year
+### Governance
 
-**Example:**
-```
-Country,Gold,Silver,Bronze,Total,Year
-Argentina,2,0,4,6,2004
-```
+| Category          | Endpoint                          | Method | Description                          | Parameters |
+|-------------------|-----------------------------------|--------|--------------------------------------|------------|
+| Political Stability | `/stability`                    | GET    | All political stability data         | None       |
+|                   | `/stability/top/{year}`          | GET    | Most stable countries                | year (int), top_n (int, optional) |
 
-### GDP Data Format
-Ensure the gdp_total_cleaned.csv file contains the following columns:
-- Country
-- Year
-- GDP (total)
+## Data Formats
 
-**Example:**
-```
-Country,Year,GDP (total)
-United States,2020,20936600000000
-China,2020,14722731304880
-```
+All data files should be in CSV format with the following structures:
 
-### GDP Per Capita Data Format
-Ensure the gdp_per_capita_cleaned.csv file contains the following columns:
-- Country
-- Year
-- GDP per capita
-
-**Example:**
-```
-Country,Year,GDP per capita
-Luxembourg,2020,115873.60
-Switzerland,2020,86601.56
-```
+| Dataset                 | Required Columns                  | Example |
+|-------------------------|-----------------------------------|---------|
+| Medals                  | Country, Gold, Silver, Bronze, Total, Year | `Argentina,2,0,4,6,2004` |
+| GDP                     | Country, Year, GDP (total)        | `United States,2020,20936600000000` |
+| GDP Per Capita          | Country, Year, GDP per capita     | `Luxembourg,2020,115873.60` |
+| Education Expenditure   | Country, Year, Education Exp (%GDP) | `Afghanistan,2006,4.684` |
+| Health Expenditure      | Country, Year, Health Exp (%GDP)  | `Afghanistan,2002,9.443` |
+| Life Expectancy         | Country, Year, Life Expectancy    | `Afghanistan,2000,55.005` |
+| Literacy Rate           | Country, Year, Literacy Rate (% 15+) | `Afghanistan,2015,33.753` |
+| Political Stability     | Country, Year, Political Stability Index | `Afghanistan,2000,-2.438` |
+| Population              | Country, Year, Population         | `Afghanistan,2000,20130327` |
+| Urban Population        | Country, Year, Urban Population (%) | `Afghanistan,2000,22.078` |
 
 ## Troubleshooting
 
-- Confirm the data files exist at their expected locations:
-  - `backend/app/data/processed/medals.csv`
-  - `backend/app/data/processed/gdp_total_cleaned.csv`
-  - `backend/app/data/processed/gdp_per_capita_cleaned.csv`
-- Verify the file paths in route files are correctly set.
-- Ensure dependencies are installed correctly in your virtual environment.
+1. **File Paths**: Confirm data files exist at:
+   ```
+   backend/app/data/processed/
+     - medals.csv
+     - gdp_total_cleaned.csv
+     - gdp_per_capita_cleaned.csv
+     - education_expenditure_cleaned.csv
+     - health_expenditure_cleaned.csv
+     - life_expectancy_cleaned.csv
+     - literacy_rate_cleaned.csv
+     - political_stability_cleaned.csv
+     - population_cleaned.csv
+     - urban_population_cleaned.csv
+   ```
+
+2. **Common Issues**:
+   - Verify file paths in route files
+   - Ensure virtual environment is activated
+   - Check all dependencies are installed
 
 ## Contributing
 
-1. Fork the repository.
-2. Create a new branch:
-   ```
-   git checkout -b feature/your-feature-name
-   ```
-3. Make your changes and commit:
-   ```
-   git commit -m "Add your feature"
-   ```
-4. Push to your branch:
-   ```
-   git push origin feature/your-feature-name
-   ```
-5. Open a Pull Request.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
+```
+
+Key improvements:
+1. Standardized endpoint tables with consistent formatting
+2. Grouped related endpoints by category
+3. Consolidated data formats into a single table
+4. Improved troubleshooting section organization
+5. Added clear section headers
+6. Better code block formatting
+7. More concise parameter descriptions
+8. Consistent naming conventions throughout
