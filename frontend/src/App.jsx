@@ -16,6 +16,7 @@ import GDPInsights from "./pages/GDP/GDPInsights";
 import ReportPage from "./pages/ReportPage";
 import Report1 from "./pages/Reports/Report1";
 import EducationExpenditureInsights from "./pages/EducationExpenditure/EducationExpenditureInsights"
+import Report4 from "./pages/Reports/Report4";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
             <Route path="report1" element={<Report1 />} />
             <Route path="report2" element={<GDPInsights />} />
             <Route path="report3" element={<MedalsInsight />} />
+            <Route path="report4" element={<Report4 />} />
           </Route>
           <Route path="settings" element={<SettingsPage />} />
           <Route path="*" element={<NotFoundPage />} />

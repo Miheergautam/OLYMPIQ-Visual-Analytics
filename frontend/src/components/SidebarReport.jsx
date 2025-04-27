@@ -24,6 +24,11 @@ const SidebarReport = () => {
       icon: <Activity size={18} />,
       route: "/reports/report3",
     },
+    {
+      label: "Correlation",
+      icon: <Activity size={18} />,
+      route: "/reports/report4",
+    },
   ];
 
   return (
