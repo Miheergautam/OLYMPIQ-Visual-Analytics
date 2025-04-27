@@ -166,6 +166,7 @@ const EducationExpenditureChart = () => {
         path.style("mix-blend-mode", "screen").style("stroke", null);
         dot.attr("display", "none");
       });
+
   }, [processedData, selectedCountries, compareAll, availableCountries]);
 
   useEffect(() => {
