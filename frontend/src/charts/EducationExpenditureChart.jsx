@@ -50,7 +50,7 @@ const EducationExpenditureChart = () => {
 
     const width = 928;
     const height = 600;
-    const margin = { top: 20, right: 20, bottom: 30, left: 30 };
+    const margin = { top: 20, right: 200, bottom: 30, left: 30 }; // Adjusted right margin for legend
 
     const selected = new Set((compareAll ? availableCountries : selectedCountries).map(c => c.value));
     const filtered = processedData.filter(d => selected.has(d.country));
@@ -136,6 +136,28 @@ const EducationExpenditureChart = () => {
         path.style("mix-blend-mode", "screen").style("stroke", null);
         dot.attr("display", "none");
       });
+
+    // Create the Legend
+    const legend = svg.append("g")
+      .attr("transform", `translate(${width - margin.right + 20}, 50)`);
+
+    legend.selectAll("rect")
+      .data(groups.keys())
+      .enter().append("rect")
+      .attr("x", 0)
+      .attr("y", (d, i) => i * 20)
+      .attr("width", 15)
+      .attr("height", 15)
+      .attr("fill", d => color(d));
+
+    legend.selectAll("text")
+      .data(groups.keys())
+      .enter().append("text")
+      .attr("x", 20)
+      .attr("y", (d, i) => i * 20 + 12)
+      .attr("fill", "#fff")
+      .style("font-size", "12px")
+      .text(d => d);
   }, [processedData, selectedCountries, compareAll]);
 
   const customStyles = {
