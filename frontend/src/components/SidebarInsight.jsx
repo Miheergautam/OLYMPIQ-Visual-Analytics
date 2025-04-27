@@ -18,6 +18,7 @@ const SidebarInsight = () => {
   const navItems = [
     { label: "Medals Insight", icon: <Home size={18} />, route: "/insights/medals" },
     { label: "GDP Insight", icon: <TrendingUp size={18} />, route: "/insights/gdp" },
+    { label: "Education Insight", icon: <TrendingUp size={18} />, route: "/insights/education" },
     { label: "Health Expenditure", icon: <Activity size={18} />, route: "/insights/health" },
     { label: "Population Insight", icon: <Users size={18} />, route: "/insights/population" },
     { label: "Political Stability", icon: <Shield size={18} />, route: "/insights/stability" },

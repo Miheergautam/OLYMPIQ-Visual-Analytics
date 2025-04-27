@@ -1,7 +1,7 @@
 import React from "react";
 import EducationExpenditureChart from "../../charts/EducationExpenditureChart";
 
-const EducationExpenditurePage = () => {
+const EducationExpenditureInsights = () => {
   return (
     <div className="text-white">
       <EducationExpenditureChart/>
@@ -9,4 +9,4 @@ const EducationExpenditurePage = () => {
   );
 };
 
-export default EducationExpenditurePage;
+export default EducationExpenditureInsights;
