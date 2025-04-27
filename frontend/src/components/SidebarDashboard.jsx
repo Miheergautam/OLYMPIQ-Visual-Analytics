@@ -18,6 +18,7 @@ const SidebarDashboard = () => {
   const navItems = [
     { label: "Medals", icon: <Home size={18} />, route: "/dashboard/medals" },
     { label: "GDP", icon: <TrendingUp size={18} />, route: "/dashboard/gdp" },
+    { label: "Education Expenditure", icon: <TrendingUp size={18} />, route: "/dashboard/education" },
     { label: "Health Expenditure", icon: <MapPin size={18} />, route: "/dashboard/health" },
     { label: "Population", icon: <Globe size={18} />, route: "/dashboard/population" },
     { label: "Political Stability", icon: <Info size={18} />, route: "/dashboard/stability" },

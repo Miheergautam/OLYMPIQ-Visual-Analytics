@@ -15,6 +15,7 @@ import MedalsInsight from "./pages/Medals/MedalsInsight";
 import GDPInsights from "./pages/GDP/GDPInsights";
 import ReportPage from "./pages/ReportPage";
 import Report1 from "./pages/Reports/Report1";
+import EducationExpenditurePage from "./pages/EducationExpenditure/EducationExpenditurePage"
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="dashboard" element={<DashboardPage />}>
             <Route path="medals" element={<MedalsPage />} />
             <Route path="gdp" element={<GDPPage />} />
+            <Route path="education" element={<EducationExpenditurePage />} />
             <Route path="health" element={<HealthExpenditurePage />} />
             <Route path="population" element={<PopulationPage />} />
             <Route path="stability" element={<PoliticalStabilityPage />} />
