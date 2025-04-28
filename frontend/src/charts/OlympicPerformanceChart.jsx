@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useGetMedalsQuery } from "../store/api";
 import {
-  AreaChart,
-  Area,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -108,7 +108,10 @@ const OlympicPerformanceChart = () => {
   };
 
   return (
-    <div className="min-w-5xl mx-auto p-6 bg-neutral-900 text-white border border-neutral-700 rounded-lg shadow-xl">
+    <div className=" p-6 bg-neutral-800 text-white border border-neutral-700 rounded-lg shadow-xl max-w-5xl">
+      <h1 className="text-4xl font-semibold mb-6">
+      Olympic Medals Performance by Country
+      </h1>
       <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-6">
         {/* Year Dropdown */}
         <div className="flex flex-col">
@@ -134,16 +137,18 @@ const OlympicPerformanceChart = () => {
           onClick={handleOpenModal}
           className="bg-(--olympiq-blue) hover:bg-yellow-500 text-neutral-900 px-4 py-2 rounded-full"
         >
-          Filter Countries
+          Filter Countries {/* ({selectedCountries.length} selected) */}{" "}
         </button>
       </div>
 
       {/* Chart */}
       <div className="h-[600px]">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
+          <BarChart
             data={filteredData}
             margin={{ top: 20, right: 30, left: 10, bottom: 100 }}
+            barCategoryGap="20%"
+             barGap="4%"
           >
             <defs>
               <linearGradient id="colorGold" x1="0" y1="0" x2="0" y2="1">
@@ -193,31 +198,28 @@ const OlympicPerformanceChart = () => {
               }}
             />
             <Legend wrapperStyle={{ color: "#ccc" }} />
-            <Area
+            <Bar
               type="monotone"
               dataKey="gold"
-
               stackId="a"
-              fill="#FFB800"  // Gold color 
+              fill="#FFB800" // Gold color
               animationDuration={500}
             />
-            <Area
+            <Bar
               type="monotone"
               dataKey="silver"
-
               stackId="a"
-              fill="#C0C0C0"  // Silver color 
+              fill="#C0C0C0" // Silver color
               animationDuration={500}
             />
-            <Area
+            <Bar
               type="monotone"
               dataKey="bronze"
-
               stackId="a"
-              fill="#CD7F32"  // Bronze color 
+              fill="#CD7F32" // Bronze color
               animationDuration={500}
             />
-          </AreaChart>
+          </BarChart>
         </ResponsiveContainer>
       </div>
 

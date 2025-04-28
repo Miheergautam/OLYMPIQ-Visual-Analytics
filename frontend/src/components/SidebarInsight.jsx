@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 const SidebarInsight = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [selectedRoute, setSelectedRoute] = useState("/insights/medals"); // Default selected route
   const navigate = useNavigate();
 
   const navItems = [
@@ -20,10 +21,16 @@ const SidebarInsight = () => {
     { label: "GDP Insight", icon: <TrendingUp size={18} />, route: "/insights/gdp" },
     { label: "Education Insight", icon: <TrendingUp size={18} />, route: "/insights/education" },
     { label: "Health Expenditure", icon: <Activity size={18} />, route: "/insights/health" },
+    { label: "Life Insights", icon: <Activity size={18} />, route: "/insights/life" },
     { label: "Population Insight", icon: <Users size={18} />, route: "/insights/population" },
     { label: "Political Stability", icon: <Shield size={18} />, route: "/insights/stability" },
     { label: "Literacy Rate", icon: <BookOpen size={18} />, route: "/insights/literacy" },
   ];
+
+  const handleNavigation = (route) => {
+    setSelectedRoute(route); // Update the selected route
+    navigate(route);
+  };
 
   return (
     <aside
@@ -52,8 +59,10 @@ const SidebarInsight = () => {
         {navItems.map((item) => (
           <button
             key={item.label}
-            onClick={() => navigate(item.route)}
-            className="flex items-center gap-3 text-md font-medium text-white px-4 py-4 rounded-lg bg-neutral-800 hover:bg-neutral-700 transition-all duration-200 group"
+            onClick={() => handleNavigation(item.route)}
+            className={`flex items-center gap-3 text-md font-medium px-4 py-4 rounded-lg transition-all duration-200 group ${
+              selectedRoute === item.route ? "bg-(--olympiq-blue) text-neutral-900 hover:text-neutral-900" : "bg-neutral-800 hover:bg-neutral-700"
+            }`}
           >
             <div className="text-[var(--olympiq-blue)]">{item.icon}</div>
             {!collapsed && (

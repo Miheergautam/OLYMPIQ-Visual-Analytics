@@ -7,36 +7,35 @@ const GDPStreamGraph = () => {
   const { data: gdpData, isLoading, isError } = useGetAllGDPPerCapitaQuery();
   const svgRef = useRef();
   const [selectedCountries, setSelectedCountries] = useState([]);
-  
+
   const width = 928;
   const height = 500;
   const marginTop = 10;
-  const marginRight = 160; 
+  const marginRight = 160;
   const marginBottom = 30;
   const marginLeft = 50;
 
   useEffect(() => {
     if (!gdpData) return;
 
-    // Process data
     const parsedData = gdpData.map(d => ({
-      year: new Date(d.Year, 0, 1), // Convert year to Date
+      year: new Date(d.Year, 0, 1),
       country: d.Country,
       gdpPerCapita: +d["GDP per capita"] || 0,
     }));
 
-    // Group by year and country
     const dataByYearAndCountry = d3.index(
       parsedData,
       d => d.year,
       d => d.country
     );
 
-    // Use selected countries or default to top 10
-    const countries = selectedCountries.length > 0 ? selectedCountries : Array.from(new Set(parsedData.map(d => d.country))).slice(0, 10);
+    const countries = selectedCountries.length > 0 
+      ? selectedCountries 
+      : Array.from(new Set(parsedData.map(d => d.country))).slice(0, 10);
+
     const years = Array.from(new Set(parsedData.map(d => d.year))).sort(d3.ascending);
 
-    // Create series
     const stack = d3.stack()
       .keys(countries)
       .offset(d3.stackOffsetWiggle)
@@ -45,7 +44,6 @@ const GDPStreamGraph = () => {
 
     const series = stack(dataByYearAndCountry);
 
-    // Create scales
     const x = d3.scaleUtc()
       .domain(d3.extent(years))
       .range([marginLeft, width - marginRight]);
@@ -63,18 +61,14 @@ const GDPStreamGraph = () => {
       .y0(d => y(d[0]))
       .y1(d => y(d[1]));
 
-    // Create SVG
     const svg = d3.select(svgRef.current)
-      .html("") // clear previous
+      .html("")
       .append("svg")
       .attr("viewBox", [0, 0, width, height])
       .attr("width", width)
       .attr("height", height)
-      .style("max-width", "100%")
-      .style("height", "auto")
-      .style("background", "#1a1a1a");
+      .attr("class", "bg-neutral-800 rounded-lg");
 
-    // Y Axis
     svg.append("g")
       .attr("transform", `translate(${marginLeft},0)`)
       .call(d3.axisLeft(y).ticks(height / 80))
@@ -89,13 +83,11 @@ const GDPStreamGraph = () => {
         .attr("text-anchor", "start")
         .text("↑ GDP per Capita"));
 
-    // X Axis
     svg.append("g")
       .attr("transform", `translate(0,${height - marginBottom})`)
       .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
       .call(g => g.select(".domain").remove());
 
-    // Draw Areas
     svg.append("g")
       .selectAll("path")
       .data(series)
@@ -105,7 +97,6 @@ const GDPStreamGraph = () => {
       .append("title")
       .text(d => d.key);
 
-    // Create the Legend
     const legend = svg.append("g")
       .attr("transform", `translate(${width - marginRight + 20}, 50)`);
 
@@ -126,22 +117,23 @@ const GDPStreamGraph = () => {
       .attr("fill", "white")
       .style("font-size", "12px")
       .text(d => d);
-
+      
   }, [gdpData, selectedCountries]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading data.</div>;
+  if (isLoading) return <div className="text-center text-white py-10">Loading...</div>;
+  if (isError) return <div className="text-center text-red-500 py-10">Error loading data.</div>;
 
   const countryOptions = Array.from(new Set(gdpData.map(d => d.Country)))
     .map(c => ({ value: c, label: c }));
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2 style={{ color: "white", textAlign: "center" }}>GDP Per Capita StreamGraph</h2>
-      
-      {/* Filter for Countries */}
-      <div style={{ width: 400, margin: "20px auto", color: "white" }}>
-        <label style={{ fontWeight: "bold", marginBottom: "5px", display: "block" }}>
+    <div className="p-6 max-w-5xl bg-neutral-800 rounded-2xl">
+      <h2 className="text-4xl font-semibold text-white mb-6">
+        1. GDP Per Capita StreamGraph
+      </h2>
+
+      <div className="max-w-5xl mx-auto mb-8">
+        <label className="block text-white font-medium mb-2">
           Select Countries:
         </label>
         <Select
@@ -149,9 +141,9 @@ const GDPStreamGraph = () => {
           options={[{ value: 'All', label: 'All Countries' }, ...countryOptions]}
           onChange={selected => {
             if (selected.some(option => option.value === 'All')) {
-              setSelectedCountries([]); // Show all countries when 'All' is selected
+              setSelectedCountries([]);
             } else {
-              setSelectedCountries(selected.map(d => d.value)); // Set selected countries
+              setSelectedCountries(selected.map(d => d.value));
             }
           }}
           placeholder="Select countries..."
@@ -188,7 +180,9 @@ const GDPStreamGraph = () => {
         />
       </div>
 
-      <div ref={svgRef}></div>
+      <div className=" p-4 overflow-x-auto">
+        <div ref={svgRef}></div>
+      </div>
     </div>
   );
 };

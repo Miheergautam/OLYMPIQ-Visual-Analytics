@@ -6,7 +6,7 @@ import SettingsPage from "./pages/SettingsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import MedalsPage from "./pages/Medals/MedalsPage";
 import GDPPage from "./pages/GDP/GDPPage";
-import HealthExpenditurePage from "./pages/HealthExpenditurePage";
+import HealthExpenditurePage from "./pages/Health/HealthExpenditurePage";
 import PopulationPage from "./pages/PopulationPage";
 import PoliticalStabilityPage from "./pages/PoliticalStabilityPage";
 import LiteracyRatePage from "./pages/LiteracyRatePage";
@@ -17,6 +17,8 @@ import ReportPage from "./pages/ReportPage";
 import Report1 from "./pages/Reports/Report1";
 import EducationExpenditureInsights from "./pages/EducationExpenditure/EducationExpenditureInsights"
 import Report4 from "./pages/Reports/Report4";
+import HealthInsights from "./pages/Health/HealthInsights";
+import LifeInsights from "./pages/LifeExp/LifeInsights";
 
 const App = () => {
   return (
@@ -36,7 +38,8 @@ const App = () => {
             <Route path="medals" element={<MedalsInsight />} />
             <Route path="gdp" element={<GDPInsights />} />
             <Route path="education" element={<EducationExpenditureInsights />} />
-            <Route path="health" element={<MedalsInsight />} />
+            <Route path="health" element={<HealthInsights/>} />
+            <Route path="life" element={<LifeInsights/>} />
             <Route path="population" element={<MedalsInsight />} />
             <Route path="political-stability" element={<MedalsInsight />} />
             <Route path="literacy-rate" element={<MedalsInsight />} />

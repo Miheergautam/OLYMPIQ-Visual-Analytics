@@ -215,8 +215,8 @@ const EducationExpenditureChart = () => {
   }
 
   return (
-    <div className="max-w-5xl bg-neutral-900 rounded-2xl shadow-lg p-6">
-      <h2 className="text-3xl font-bold text-white mb-8">
+    <div className="max-w-5xl bg-neutral-800 rounded-2xl shadow-lg p-6">
+      <h2 className="text-4xl font-bold text-white mb-8">
         Education Expenditure (% of GDP) Trends
       </h2>
 
