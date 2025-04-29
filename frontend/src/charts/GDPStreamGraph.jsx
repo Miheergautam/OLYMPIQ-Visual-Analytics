@@ -129,7 +129,7 @@ const GDPStreamGraph = () => {
   return (
     <div className="p-6 max-w-5xl bg-neutral-800 rounded-2xl">
       <h2 className="text-4xl font-semibold text-white mb-6">
-        1. GDP Per Capita StreamGraph
+        GDP Per Capita StreamGraph
       </h2>
 
       <div className="max-w-5xl mx-auto mb-8">

@@ -1,16 +1,28 @@
 import React from "react";
 import { useGetMedalsQuery } from "../../store/api";
-import { Star } from "lucide-react";  // Optional icon for added visual flair
+import { Star } from "lucide-react";
 
-const BestYearCard = ({ selectedYear }) => {
+const BestYearCard = () => {
   const { data, isLoading } = useGetMedalsQuery();
 
-  if (isLoading) return <div className="p-6 bg-white shadow-md rounded-xl text-center text-gray-500">Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="p-6 bg-white shadow-md rounded-xl text-center text-gray-500">
+        Loading...
+      </div>
+    );
+  }
+
+  // Aggregate total medals by year
+  const medalsByYear = data?.reduce((acc, item) => {
+    acc[item.Year] = (acc[item.Year] || 0) + item.Total;
+    return acc;
+  }, {});
 
   // Find the year with the highest total medals
-  const bestYear = data?.reduce(
-    (max, country) => (country.Total > max.Total ? country : max),
-    { Total: 0 }
+  const bestYear = Object.entries(medalsByYear || {}).reduce(
+    (max, [year, total]) => (+total > +max.total ? { year, total } : max),
+    { year: null, total: 0 }
   );
 
   return (
@@ -20,8 +32,9 @@ const BestYearCard = ({ selectedYear }) => {
         <h3 className="text-2xl font-semibold text-gray-800">Best Year for Medals</h3>
       </div>
       <p className="text-lg text-gray-700">
-        The best year for medals was <span className="font-semibold text-gray-900">{bestYear?.Year}</span> with{" "}
-        <span className="font-semibold text-yellow-600">{bestYear?.Total}</span> total medals.
+        The year with the most medals was{" "}
+        <span className="font-semibold text-gray-900">{bestYear.year}</span> with{" "}
+        <span className="font-semibold text-yellow-600">{bestYear.total}</span> total medals.
       </p>
     </div>
   );

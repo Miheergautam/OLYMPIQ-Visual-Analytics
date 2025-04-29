@@ -14,7 +14,7 @@ const BubbleChart = () => {
   const svgRef = useRef();
   const [joinedData, setJoinedData] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
-  const [yearRange, setYearRange] = useState({ from: null, to: null });
+  const [yearRange, setYearRange] = useState({ from: 2000, to: 2001 });
 
   const parseFloatSafe = (val) => (val ? parseFloat(val) : null);
 
@@ -63,8 +63,10 @@ const BubbleChart = () => {
     grouped.forEach((values) => {
       const sorted = values.sort((a, b) => a.year - b.year);
       sorted.forEach((item, idx) => {
-        if (!item.health) item.health = getInterpolatedValue(sorted, idx, "health");
-        if (!item.education) item.education = getInterpolatedValue(sorted, idx, "education");
+        if (!item.health)
+          item.health = getInterpolatedValue(sorted, idx, "health");
+        if (!item.education)
+          item.education = getInterpolatedValue(sorted, idx, "education");
       });
       filled.push(...sorted);
     });
@@ -86,7 +88,8 @@ const BubbleChart = () => {
       const yearOk =
         (!yearRange.from || d.year >= yearRange.from) &&
         (!yearRange.to || d.year <= yearRange.to);
-      const countryOk = !selectedCountries.length || selectedCountries.includes(d.country);
+      const countryOk =
+        !selectedCountries.length || selectedCountries.includes(d.country);
       return yearOk && countryOk;
     });
   };
@@ -102,18 +105,28 @@ const BubbleChart = () => {
       width = 900 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
-    const svg = d3.select(svgRef.current)
+    const svg = d3
+      .select(svgRef.current)
       .html("")
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
-      .style("background", "#1e1e1e")
+      .style("background", "bg-neutral-800")
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const x = d3.scaleLinear().domain(d3.extent(data, (d) => d.education)).range([0, width]);
-    const y = d3.scaleLinear().domain(d3.extent(data, (d) => d.health)).range([height, 0]);
-    const z = d3.scaleSqrt().domain([0, d3.max(data, (d) => d.medals)]).range([2, 30]);
+    const x = d3
+      .scaleLinear()
+      .domain(d3.extent(data, (d) => d.education))
+      .range([0, width]);
+    const y = d3
+      .scaleLinear()
+      .domain(d3.extent(data, (d) => d.health))
+      .range([height, 0]);
+    const z = d3
+      .scaleSqrt()
+      .domain([0, d3.max(data, (d) => d.medals)])
+      .range([2, 30]);
 
     appendAxes(svg, x, y, width, height);
     appendLabels(svg, x, y, width, height);
@@ -121,26 +134,30 @@ const BubbleChart = () => {
   };
 
   const appendAxes = (svg, x, y, width, height) => {
-    svg.append("g")
+    svg
+      .append("g")
       .call(d3.axisLeft(y).tickSize(-width).tickFormat(""))
       .selectAll("line")
       .attr("stroke", "#444")
       .attr("stroke-dasharray", "2,2");
 
-    svg.append("g")
+    svg
+      .append("g")
       .attr("transform", `translate(0, ${height})`)
       .call(d3.axisBottom(x).ticks(6))
       .selectAll("text")
       .style("fill", "#ccc");
 
-    svg.append("g")
+    svg
+      .append("g")
       .call(d3.axisLeft(y).ticks(6))
       .selectAll("text")
       .style("fill", "#ccc");
   };
 
   const appendLabels = (svg, x, y, width, height) => {
-    svg.append("text")
+    svg
+      .append("text")
       .attr("text-anchor", "middle")
       .attr("x", width / 2)
       .attr("y", height + 50)
@@ -148,7 +165,8 @@ const BubbleChart = () => {
       .style("font-size", "14px")
       .text("Education Expenditure (% of GDP)");
 
-    svg.append("text")
+    svg
+      .append("text")
       .attr("text-anchor", "middle")
       .attr("transform", "rotate(-90)")
       .attr("x", -height / 2)
@@ -164,7 +182,8 @@ const BubbleChart = () => {
       .domain(Array.from(new Set(data.map((d) => d.country))))
       .range(d3.schemeSet2);
 
-    const tooltip = d3.select(svgRef.current)
+    const tooltip = d3
+      .select(svgRef.current)
       .append("div")
       .style("opacity", 0)
       .attr("class", "tooltip")
@@ -178,16 +197,23 @@ const BubbleChart = () => {
     const showTooltip = (event, d) => {
       tooltip.transition().duration(200).style("opacity", 1);
       tooltip
-        .html(`<strong>${d.country}</strong><br/>Year: ${d.year}<br/>Health: ${d.health?.toFixed(1)}%<br/>Edu: ${d.education?.toFixed(1)}%<br/>Medals: ${d.medals}`)
-        .style("left", (event.pageX + 10) + "px")
-        .style("top", (event.pageY - 40) + "px");
+        .html(
+          `<strong>${d.country}</strong><br/>Year: ${
+            d.year
+          }<br/>Health: ${d.health?.toFixed(
+            1
+          )}%<br/>Edu: ${d.education?.toFixed(1)}%<br/>Medals: ${d.medals}`
+        )
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 40 + "px");
     };
 
     const hideTooltip = () => {
       tooltip.transition().duration(200).style("opacity", 0);
     };
 
-    svg.append("g")
+    svg
+      .append("g")
       .selectAll("circle")
       .data(data, (d) => d.country + d.year)
       .join(
@@ -268,19 +294,25 @@ const BubbleChart = () => {
   };
 
   return (
-    <div className="max-w-5xl flex flex-col justify-center items-center">
-      <div className="mx-auto my-4 text-white w-full">
+    <div className="max-w-5xl p-6 flex flex-col justify-center items-start bg-neutral-800 rounded-2xl ">
+      <h2 className="text-4xl font-semibold text-olympiq-blue">
+        HealthExpenditure vs EducationExpenditure
+      </h2>
+      <div className="flex w-full gap-5 my-4">
+      <div className="my-2 text-white w-full">
         <label className="font-bold mb-2 block">Filter Countries:</label>
         <Select
           isMulti
           options={countryOptions}
-          onChange={(selected) => setSelectedCountries(selected.map((d) => d.value))}
+          onChange={(selected) =>
+            setSelectedCountries(selected.map((d) => d.value))
+          }
           placeholder="Select countries..."
-          styles={customSelectStyles}
+          styles={customSelectStyles}c
         />
       </div>
 
-      <div className="mx-auto my-4 flex gap-3 w-full">
+      <div className=" my-2 flex gap-3 w-full">
         <div className="flex-1">
           <label className="text-white font-bold mb-2 block">From Year:</label>
           <Select
@@ -303,9 +335,9 @@ const BubbleChart = () => {
             styles={customSelectStyles}
           />
         </div>
+        </div>
       </div>
       <div ref={svgRef}></div>
-
     </div>
   );
 };

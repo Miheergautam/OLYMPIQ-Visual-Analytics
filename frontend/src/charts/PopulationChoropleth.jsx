@@ -5,45 +5,38 @@ import * as d3 from 'd3';
 const PopulationChoropleth = () => {
   const svgRef = useRef(null);
   const tooltipRef = useRef(null);
-  const [year, setYear] = useState(2023);
+  const [year, setYear] = useState(2000);
   const [populationData, setPopulationData] = useState({});
+  const [availableYears, setAvailableYears] = useState([]);
   const [topCountries, setTopCountries] = useState([]);
-  
-  const { data: populationRawData, isLoading, isError } = useGetAllPopulationQuery();
 
-  const countryNameMap = {
-    "USA": "United States",
-    "UK": "United Kingdom",
-    "DEU": "Germany",
-    "CAN": "Canada",
-    "AUS": "Australia",
-    // Add more mappings if needed
-  };
+  const { data: populationRawData, isLoading, isError } = useGetAllPopulationQuery();
 
   useEffect(() => {
     if (!populationRawData) return;
 
-    const nestedPopulation = {};
-    populationRawData.forEach(item => {
-      const countryName = countryNameMap[item.Country] || item.Country;
-      if (!nestedPopulation[countryName]) {
-        nestedPopulation[countryName] = {};
-      }
-      nestedPopulation[countryName][item.Year] = Math.round(item.Population / 1_000_000);
+    const nested= {};
+    const yearSet = new Set();
+
+    populationRawData.forEach(({ Country, Year, Population }) => {
+      if (!nested[Country]) nested[Country] = {};
+      nested[Country][Year] = Math.round(Population / 1_000_000);
+      yearSet.add(Year);
     });
 
-    setPopulationData(nestedPopulation);
+    setPopulationData(nested);
+    setAvailableYears(Array.from(yearSet).sort());
 
-    const topList = Object.entries(nestedPopulation)
+    const top = Object.entries(nested)
       .map(([country, years]) => ({
         country,
-        population: years[year] || 0,
+        population: years[year] || 0
       }))
       .sort((a, b) => b.population - a.population)
-      .slice(0, 300) // Top 20 countries
+      .slice(0, 300)
       .map(item => item.country);
 
-    setTopCountries(topList);
+    setTopCountries(top);
   }, [populationRawData, year]);
 
   useEffect(() => {
@@ -51,7 +44,7 @@ const PopulationChoropleth = () => {
 
     const svg = d3.select(svgRef.current);
     const container = svgRef.current.parentNode;
-    const width = container ? container.clientWidth : window.innerWidth;
+    const width = container ? container.clientWidth : 800;
     const height = window.innerHeight * 0.8;
 
     svg.attr('width', width).attr('height', height).style('background-color', '#f5f5f5');
@@ -61,64 +54,58 @@ const PopulationChoropleth = () => {
       .scale((width / 2.5) / Math.PI)
       .translate([width / 2, height / 1.5]);
 
-    const pathGenerator = d3.geoPath().projection(projection);
+    const path = d3.geoPath().projection(projection);
 
-    const allPopulations = Object.values(populationData)
-      .map(country => country[year])
-      .filter(val => val !== undefined);
+    const allPopValues = Object.values(populationData)
+      .map(d => d[year])
+      .filter(Boolean);
 
-    const minPop = d3.min(allPopulations) ?? 0;
-    const maxPop = d3.max(allPopulations) ?? 1;
+    const min = d3.min(allPopValues) ?? 0;
+    const max = d3.max(allPopValues) ?? 1;
 
-    const colorScale = d3.scaleSequential()
-      .domain([minPop, maxPop])
-      .interpolator(d3.interpolateBlues);
+    const colorScale = d3.scaleSequential([min, max], d3.interpolateBlues);
 
     d3.json('https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson')
-      .then(geoData => {
-        geoData.features = geoData.features.filter(f => f.properties && f.properties.name !== "Antarctica");
+      .then(geo => {
+        geo.features = geo.features.filter(f => f.properties?.name !== "Antarctica");
 
         svg.selectAll('path')
-          .data(geoData.features)
+          .data(geo.features)
           .join('path')
-          .attr('d', pathGenerator)
+          .attr('d', path)
+          .attr('fill', d => {
+            const name = d.properties?.name;
+            const val = populationData[name]?.[year];
+            return val != null ? colorScale(val) : '#ccc';
+          })
           .attr('stroke', d => topCountries.includes(d.properties.name) ? '#333' : '#aaa')
           .attr('stroke-width', d => topCountries.includes(d.properties.name) ? 1.5 : 0.5)
-          .attr('fill', d => {
-            const countryName = d.properties?.name;
-            const val = populationData[countryName]?.[year];
-            return val !== undefined ? colorScale(val) : '#ccc';
-          })
           .on('mouseover', function (event, d) {
-            const countryName = d.properties?.name;
-            const val = populationData[countryName]?.[year];
+            const name = d.properties?.name;
+            const val = populationData[name]?.[year];
 
             d3.select(this)
               .raise()
-              .transition()
-              .duration(200)
-              .attr('stroke', '#111')
-              .attr('stroke-width', 2);
+              .transition().duration(200)
+              .attr('stroke', '#111').attr('stroke-width', 2);
 
             d3.select(tooltipRef.current)
               .style('opacity', 1)
               .html(`
-                <div class="text-blue-800 font-bold">${countryName}</div>
+                <div class="text-blue-800 font-bold">${name}</div>
                 <div>Population: ${val ? `${val.toLocaleString()}M` : "N/A"}</div>
               `)
-              .style('left', (event.pageX + 10) + 'px')
-              .style('top', (event.pageY - 28) + 'px');
+              .style('left', `${event.pageX + 10}px`)
+              .style('top', `${event.pageY - 28}px`);
           })
           .on('mouseout', function () {
             d3.select(this)
-              .transition()
-              .duration(200)
+              .transition().duration(200)
               .attr('stroke', d => topCountries.includes(d.properties.name) ? '#333' : '#aaa')
               .attr('stroke-width', d => topCountries.includes(d.properties.name) ? 1.5 : 0.5);
 
             d3.select(tooltipRef.current)
-              .transition()
-              .duration(300)
+              .transition().duration(300)
               .style('opacity', 0);
           });
 
@@ -131,15 +118,14 @@ const PopulationChoropleth = () => {
         const defs = svg.append("defs");
         const linearGradient = defs.append("linearGradient")
           .attr("id", "legend-gradient")
-          .attr("x1", "0%")
-          .attr("x2", "100%");
+          .attr("x1", "0%").attr("x2", "100%");
 
         linearGradient.selectAll("stop")
           .data(d3.range(0, 1.01, 0.1))
           .enter()
           .append("stop")
           .attr("offset", d => `${d * 100}%`)
-          .attr("stop-color", d => colorScale(minPop + d * (maxPop - minPop)));
+          .attr("stop-color", d => colorScale(min + d * (max - min)));
 
         svg.append("rect")
           .attr("x", legendX - 10)
@@ -160,40 +146,38 @@ const PopulationChoropleth = () => {
           .style("fill", "url(#legend-gradient)");
 
         const legendScale = d3.scaleLinear()
-          .domain([minPop, maxPop])
+          .domain([min, max])
           .range([0, legendWidth]);
-
-        const legendAxis = d3.axisBottom(legendScale)
-          .ticks(5)
-          .tickFormat(d => `${d}M`);
 
         svg.append("g")
           .attr("transform", `translate(${legendX}, ${legendY + 15})`)
-          .call(legendAxis)
+          .call(d3.axisBottom(legendScale).ticks(5).tickFormat(d => `${d}M`))
           .selectAll("text")
           .attr("class", "text-xs text-gray-700");
       })
-      .catch(err => console.error('Error loading GeoJSON:', err));
+      .catch(err => console.error("GeoJSON error:", err));
   }, [populationData, year, topCountries]);
 
   if (isLoading) return <div>Loading population data...</div>;
-  if (isError) return <div>Error loading population data.</div>;
+  if (isError) return <div>Error loading data.</div>;
 
   return (
     <div className="relative w-full h-full">
-      <svg ref={svgRef}></svg>
-      <div ref={tooltipRef} className="absolute pointer-events-none bg-white text-xs p-2 rounded shadow opacity-0"></div>
-      <div className="absolute top-4 right-4 bg-white p-2 rounded shadow">
-        <input
-          type="range"
-          min={2000}
-          max={2023}
+      <div className="absolute top-2 left-2 z-10 bg-neutral-900 border rounded-lg shadow px-2 py-2">
+        <label htmlFor="year-select" className="mr-2 text-sm font-medium">Select Year:</label>
+        <select
+          id="year-select"
           value={year}
-          onChange={e => setYear(parseInt(e.target.value))}
-          className="w-32"
-        />
-        <span className="ml-2 font-semibold text-lg">{year}</span>
+          onChange={(e) => setYear(Number(e.target.value))}
+          className="text-sm border px-1 py-0.5 rounded"
+        >
+          {availableYears.map(y => (
+            <option key={y} value={y}>{y}</option>
+          ))}
+        </select>
       </div>
+      <svg ref={svgRef} />
+      <div ref={tooltipRef} className="absolute bg-white border border-gray-300 rounded px-2 py-1 text-sm shadow-lg pointer-events-none" style={{ opacity: 0 }} />
     </div>
   );
 };

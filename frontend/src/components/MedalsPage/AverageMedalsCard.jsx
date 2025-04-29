@@ -11,42 +11,31 @@ const AverageMedalsCard = () => {
     top_n: 100,
   });
 
-  const handleYearChange = (event) => {
-    setSelectedYear(parseInt(event.target.value));
+  const handleYearChange = (e) => {
+    setSelectedYear(parseInt(e.target.value));
+    setSelectedCountry(""); // Reset country when year changes
   };
 
-  const handleCountryChange = (event) => {
-    setSelectedCountry(event.target.value);
+  const handleCountryChange = (e) => {
+    setSelectedCountry(e.target.value);
   };
 
   const countriesForYear = useMemo(() => {
-    return data.filter((country) => country.Year === selectedYear);
+    return data.filter((d) => d.Year === selectedYear);
   }, [data, selectedYear]);
 
-  const calculateAverageMedals = (data) => {
-    const totalMedals = data.reduce((acc, country) => acc + country.Total, 0);
-    const numberOfCountries = data.length;
-    return numberOfCountries > 0
-      ? Math.round(totalMedals / numberOfCountries)
-      : 0;
-  };
-
-  const calculateCountryAverage = (country) => {
-    const countryData = countriesForYear.filter((c) => c.Country === country);
-    const totalMedals = countryData.reduce((acc, c) => acc + c.Total, 0);
-    return countryData.length > 0
-      ? Math.round(totalMedals / countryData.length)
-      : 0;
-  };
-
-  const averageMedals = selectedCountry
-    ? calculateCountryAverage(selectedCountry)
-    : calculateAverageMedals(countriesForYear);
-
   const uniqueCountries = useMemo(() => {
-    const countries = countriesForYear.map((country) => country.Country);
-    return [...new Set(countries)];
+    return [...new Set(countriesForYear.map((c) => c.Country))];
   }, [countriesForYear]);
+
+  const averageMedals = useMemo(() => {
+    const relevantData = selectedCountry
+      ? countriesForYear.filter((c) => c.Country === selectedCountry)
+      : countriesForYear;
+
+    const total = relevantData.reduce((sum, c) => sum + c.Total, 0);
+    return relevantData.length > 0 ? Math.round(total / relevantData.length) : 0;
+  }, [countriesForYear, selectedCountry]);
 
   if (isLoading) {
     return (
@@ -70,12 +59,12 @@ const AverageMedalsCard = () => {
         <div className="flex items-center space-x-3">
           <FaMedal className="text-white text-3xl" />
           <h3 className="text-xl font-semibold text-olympiq-blue">
-            Average Medals per Country ({selectedYear})
+            Average Medals {selectedCountry ? `for ${selectedCountry}` : "per Country"} ({selectedYear})
           </h3>
         </div>
+
         <div className="flex gap-4">
           <select
-            id="year-selector"
             value={selectedYear}
             onChange={handleYearChange}
             className="p-2 bg-neutral-800 border border-gray-600 rounded-lg shadow-md text-olympiq-blue focus:ring-2 focus:ring-olympiq-blue focus:outline-none"
@@ -87,19 +76,20 @@ const AverageMedalsCard = () => {
             ))}
           </select>
 
-          <select
-            id="country-selector"
-            value={selectedCountry}
-            onChange={handleCountryChange}
-            className="p-2 bg-neutral-800 border border-gray-600 rounded-lg shadow-md text-olympiq-blue focus:ring-2 focus:ring-olympiq-blue focus:outline-none"
-          >
-            <option value="">All Countries</option>
-            {uniqueCountries.map((country) => (
-              <option key={country} value={country}>
-                {country}
-              </option>
-            ))}
-          </select>
+          {uniqueCountries.length > 0 && (
+            <select
+              value={selectedCountry}
+              onChange={handleCountryChange}
+              className="p-2 bg-neutral-800 border border-gray-600 rounded-lg shadow-md text-olympiq-blue focus:ring-2 focus:ring-olympiq-blue focus:outline-none"
+            >
+              <option value="">All Countries</option>
+              {uniqueCountries.map((country) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
       </div>
 

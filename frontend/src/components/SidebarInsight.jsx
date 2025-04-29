@@ -23,8 +23,8 @@ const SidebarInsight = () => {
     { label: "Health Expenditure", icon: <Activity size={18} />, route: "/insights/health" },
     { label: "Life Insights", icon: <Activity size={18} />, route: "/insights/life" },
     { label: "Population Insight", icon: <Users size={18} />, route: "/insights/population" },
-    { label: "Political Stability", icon: <Shield size={18} />, route: "/insights/stability" },
-    { label: "Literacy Rate", icon: <BookOpen size={18} />, route: "/insights/literacy" },
+/*     { label: "Political Stability", icon: <Shield size={18} />, route: "/insights/stability" },
+    { label: "Literacy Rate", icon: <BookOpen size={18} />, route: "/insights/literacy" }, */
   ];
 
   const handleNavigation = (route) => {

@@ -19,6 +19,8 @@ import EducationExpenditureInsights from "./pages/EducationExpenditure/Education
 import Report4 from "./pages/Reports/Report4";
 import HealthInsights from "./pages/Health/HealthInsights";
 import LifeInsights from "./pages/LifeExp/LifeInsights";
+import Report2 from "./pages/Reports/Report2";
+import Report3 from "./pages/Reports/Report3";
 
 const App = () => {
   return (
@@ -40,14 +42,13 @@ const App = () => {
             <Route path="education" element={<EducationExpenditureInsights />} />
             <Route path="health" element={<HealthInsights/>} />
             <Route path="life" element={<LifeInsights/>} />
-            <Route path="population" element={<MedalsInsight />} />
             <Route path="political-stability" element={<MedalsInsight />} />
             <Route path="literacy-rate" element={<MedalsInsight />} />
           </Route>
           <Route path="reports" element={<ReportPage />}>
             <Route path="report1" element={<Report1 />} />
-            <Route path="report2" element={<GDPInsights />} />
-            <Route path="report3" element={<MedalsInsight />} />
+            <Route path="report2" element={<Report2 />} />
+            <Route path="report3" element={<Report3 />} />
             <Route path="report4" element={<Report4 />} />
           </Route>
           <Route path="settings" element={<SettingsPage />} />

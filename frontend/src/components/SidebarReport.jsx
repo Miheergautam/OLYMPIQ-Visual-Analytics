@@ -18,9 +18,13 @@ const SidebarReport = () => {
       icon: <Home size={18} />,
       route: "/reports/report1",
     },
-    { label: "PSI", icon: <TrendingUp size={18} />, route: "/reports/report2" },
     {
       label: "Cluster",
+      icon: <Activity size={18} />,
+      route: "/reports/report2",
+    },
+    {
+      label: "PCAPlotOlympics",
       icon: <Activity size={18} />,
       route: "/reports/report3",
     },
