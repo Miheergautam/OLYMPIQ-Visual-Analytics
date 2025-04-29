@@ -33,4 +33,4 @@ This project lies at the intersection of sports analytics, socio-economic develo
 
 Explore the OlympIQ project and gain insights into the intersection of sports and socio-economic development.
 
-OLYMPIQ-Presentation Slides [HERE](https://example.com](https://docs.google.com/presentation/d/1n40S49CrSMSCjosL0rKGZwqMSmHVs5dYYOi-ctJ3eNc/edit?usp=sharing)
+OLYMPIQ-Presentation Slides [HERE](https://docs.google.com/presentation/d/1n40S49CrSMSCjosL0rKGZwqMSmHVs5dYYOi-ctJ3eNc/edit?usp=sharing)
