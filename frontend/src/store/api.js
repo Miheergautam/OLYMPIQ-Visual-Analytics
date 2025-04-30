@@ -144,15 +144,6 @@ export const olympiqApi = createApi({
       query: ({ factor, medal_type, method }) =>
         `correlation?factor=${factor}&medal_type=${medal_type}&method=${method}`,
     }),
-
-    getGeoData: builder.query({
-      query: () =>
-        "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson", // 🔥 Fetch directly from GitHub
-    }),
-    getGdpData: builder.query({
-      query: () => "gdp_per_capita_with_iso.csv", // Still from your public/ folder
-      transformResponse: (response) => response,
-    }),
   }),
 });
 
@@ -222,7 +213,4 @@ export const {
 
   // Correlation
   useGetCorrelationQuery,
-
-  useGetGeoDataQuery,
-  useGetGdpDataQuery,
 } = olympiqApi;
